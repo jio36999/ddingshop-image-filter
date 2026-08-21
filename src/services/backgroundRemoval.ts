@@ -170,12 +170,19 @@ function clamp(value: number, min: number, max: number) {
 }
 
 function getConfiguredModelBaseUrl() {
+  const sameOriginModelUrl = new URL("/models/", window.location.origin).toString().replace(/\/$/, "");
+  const isPagesDeployment = /\.pages\.dev$/i.test(window.location.hostname);
+
+  if (isPagesDeployment) {
+    return sameOriginModelUrl;
+  }
+
   const envBaseUrl = import.meta.env.VITE_MODEL_BASE_URL?.trim();
   if (envBaseUrl) {
     return envBaseUrl.replace(/\/$/, "");
   }
 
-  return new URL("models/", window.location.href).toString().replace(/\/$/, "");
+  return sameOriginModelUrl;
 }
 
 function getProfileForPreset(preset: RemovalOptions["preset"]) {
