@@ -10,9 +10,15 @@ function buildTargetUrl(pathname, env) {
 }
 
 function normalizeObjectKey(pathname) {
-  return Array.isArray(pathname)
+  const normalizedPath = Array.isArray(pathname)
     ? pathname.filter(Boolean).join("/")
     : String(pathname || "").replace(/^\/+/, "");
+
+  if (!normalizedPath) {
+    return "models";
+  }
+
+  return normalizedPath.startsWith("models/") ? normalizedPath : `models/${normalizedPath}`;
 }
 
 function createProxyHeaders(upstreamHeaders) {
