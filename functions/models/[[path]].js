@@ -9,6 +9,12 @@ function buildTargetUrl(pathname, env) {
   return `${upstreamBaseUrl}/${normalizedPath}`;
 }
 
+function normalizeObjectKey(pathname) {
+  return Array.isArray(pathname)
+    ? pathname.filter(Boolean).join("/")
+    : String(pathname || "").replace(/^\/+/, "");
+}
+
 function createProxyHeaders(upstreamHeaders) {
   const headers = new Headers();
   const passthroughHeaders = [
@@ -36,8 +42,42 @@ function createProxyHeaders(upstreamHeaders) {
 
 async function handleProxyRequest(context) {
   const { params, request, env } = context;
-  const targetUrl = buildTargetUrl(params.path, env);
   const method = request.method === "HEAD" ? "HEAD" : "GET";
+  const objectKey = normalizeObjectKey(params.path);
+
+  if (env.MODEL_BUCKET?.get) {
+    const object = await env.MODEL_BUCKET.get(objectKey);
+
+    if (!object) {
+      return new Response("Not found", {
+        status: 404,
+        headers: {
+          "access-control-allow-origin": "*",
+          "access-control-allow-methods": "GET, HEAD, OPTIONS",
+          "access-control-allow-headers": "*",
+        },
+      });
+    }
+
+    const headers = new Headers();
+    object.writeHttpMetadata(headers);
+    if (object.size != null) {
+      headers.set("content-length", String(object.size));
+    }
+    if (object.httpEtag) {
+      headers.set("etag", object.httpEtag);
+    }
+    headers.set("access-control-allow-origin", "*");
+    headers.set("access-control-allow-methods", "GET, HEAD, OPTIONS");
+    headers.set("access-control-allow-headers", "*");
+
+    return new Response(method === "HEAD" ? null : object.body, {
+      status: 200,
+      headers,
+    });
+  }
+
+  const targetUrl = buildTargetUrl(params.path, env);
 
   const upstreamResponse = await fetch(targetUrl, {
     method,
