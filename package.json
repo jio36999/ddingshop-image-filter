@@ -1,0 +1,29 @@
+{
+  "name": "image-filter-webapp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -p tsconfig.app.json && vite build --base ./",
+    "preview": "vite preview",
+    "start": "python -m http.server 4173 --directory dist --bind 127.0.0.1"
+  },
+  "dependencies": {
+    "@bunnio/rembg-web": "^1.0.2",
+    "idb-keyval": "^6.2.1",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.544.0",
+    "onnxruntime-web": "^1.23.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.2",
+    "typescript": "~5.9.2",
+    "vite": "^7.1.3"
+  }
+}

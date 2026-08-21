@@ -1,0 +1,14 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cameraBg" x1="10" y1="8" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6B75" />
+      <stop offset="1" stop-color="#E41E2B" />
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="52" height="52" rx="18" fill="url(#cameraBg)" />
+  <rect x="13" y="20" width="38" height="25" rx="8" fill="white" fill-opacity="0.96" />
+  <path d="M22 20L26 15H38L42 20H22Z" fill="white" fill-opacity="0.96" />
+  <circle cx="32" cy="32.5" r="8.5" fill="#FFD7DA" />
+  <circle cx="32" cy="32.5" r="5.5" fill="#E41E2B" />
+  <circle cx="44" cy="25.5" r="2.2" fill="#FF9AA1" />
+</svg>

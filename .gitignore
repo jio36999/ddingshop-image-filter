@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.production
+.env.production.local
+*.tsbuildinfo
+vite-dev.log
+vite-dev.err.log
+public/models/
